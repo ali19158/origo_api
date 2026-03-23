@@ -1,0 +1,195 @@
+### ============================================================
+### Variables
+### ============================================================
+
+@baseUrl = http://localhost:8080/api/v1
+@token = {{login.response.body.token}}
+
+### ============================================================
+### Health Check
+### ============================================================
+
+### Health check
+GET http://localhost:8080/health
+
+### ============================================================
+### Auth
+### ============================================================
+
+### Register a new user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "secret123",
+  "first_name": "John",
+  "last_name": "Doe"
+}
+
+### Register an admin user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin123",
+  "first_name": "Admin",
+  "last_name": "User"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "secret123"
+}
+
+### ============================================================
+### Categories (Public)
+### ============================================================
+
+### List all categories
+GET {{baseUrl}}/categories
+
+### Get category by ID
+GET {{baseUrl}}/categories/1
+
+### ============================================================
+### Products (Public)
+### ============================================================
+
+### List all products
+GET {{baseUrl}}/products
+
+### List products with filters
+GET {{baseUrl}}/products?page=1&page_size=10&category_id=1&min_price=10&max_price=100&search=phone
+
+### Get product by ID
+GET {{baseUrl}}/products/1
+
+### ============================================================
+### Categories (Admin)
+### ============================================================
+
+### Create category
+POST {{baseUrl}}/categories
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Electronics",
+  "slug": "electronics"
+}
+
+### Create subcategory
+POST {{baseUrl}}/categories
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Smartphones",
+  "slug": "smartphones",
+  "parent_id": 1
+}
+
+### Update category
+PUT {{baseUrl}}/categories/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Electronics & Gadgets",
+  "slug": "electronics-gadgets"
+}
+
+### Delete category
+DELETE {{baseUrl}}/categories/1
+Authorization: Bearer {{token}}
+
+### ============================================================
+### Products (Admin)
+### ============================================================
+
+### Create product
+POST {{baseUrl}}/products
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "iPhone 15 Pro",
+  "slug": "iphone-15-pro",
+  "description": "Latest Apple smartphone with A17 Pro chip",
+  "price": 999.99,
+  "stock": 50,
+  "category_id": 1,
+  "image_url": "https://example.com/iphone15.jpg",
+  "is_active": true
+}
+
+### Update product
+PUT {{baseUrl}}/products/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "iPhone 15 Pro",
+  "slug": "iphone-15-pro",
+  "description": "Updated description",
+  "price": 949.99,
+  "stock": 45,
+  "category_id": 1,
+  "image_url": "https://example.com/iphone15-v2.jpg",
+  "is_active": true
+}
+
+### Delete product
+DELETE {{baseUrl}}/products/1
+Authorization: Bearer {{token}}
+
+### ============================================================
+### Orders (Authenticated)
+### ============================================================
+
+### Create order
+POST {{baseUrl}}/orders
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "address": "123 Main St, New York, NY 10001",
+  "items": [
+    {
+      "product_id": 1,
+      "quantity": 2
+    },
+    {
+      "product_id": 2,
+      "quantity": 1
+    }
+  ]
+}
+
+### List my orders
+GET {{baseUrl}}/orders/my
+Authorization: Bearer {{token}}
+
+### Get order by ID
+GET {{baseUrl}}/orders/1
+Authorization: Bearer {{token}}
+
+### ============================================================
+### Orders (Admin)
+### ============================================================
+
+### Update order status
+PUT {{baseUrl}}/orders/1/status
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "status": "shipped"
+}
