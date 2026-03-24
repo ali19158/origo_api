@@ -1,17 +1,12 @@
-# fly.toml app configuration file generated for origo-api on 2026-03-24T15:01:36Z
+# fly.toml app configuration file generated for origo-api on 2026-03-24T15:41:45Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'origo-api'
-primary_region = 'iad'
+primary_region = 'fra'
 
 [build]
-  [build.args]
-    GO_VERSION = '1.22'
-
-[env]
-  PORT = '8080'
 
 [http_service]
   internal_port = 8080
